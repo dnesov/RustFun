@@ -27,7 +27,6 @@ const SURNAMES: [&'static str; 16] = [
     "Walker",
 ];
 
-
 pub struct Student {
     name: String,
     class_id: String,
@@ -56,7 +55,7 @@ impl Student {
         let total: i8 = self.marks.iter().sum();
         avg = total as f32 / self.marks.len() as f32;
 
-        return avg;
+        return format!("{:.1$}", avg, 2).parse().unwrap();
     }
 }
 
@@ -78,23 +77,19 @@ impl School {
 
         let mut rng = rand::thread_rng();
 
-        for _x in 1..amount {
+        for i in 1..amount {
             let random_name: String = String::from(NAMES[rng.gen_range(0, NAMES.len())]);
             let random_surname: String = String::from(SURNAMES[rng.gen_range(0, SURNAMES.len())]);
+            let mut marks: Vec<i8> = Vec::new();
+
+            for i in 0..rng.gen_range(1, 10) {
+                marks.push(rng.gen_range(1, 6));
+            }
 
             students.push(Student {
                 name: format!("{} {}", random_name, random_surname),
                 class_id: String::from(rng.gen_range(1, 5).to_string()),
-                marks: vec![
-                    // shitty solution cuz idk how to do that correctly in Rust, sorry xD
-                    rng.gen_range(1, 6),
-                    rng.gen_range(1, 6),
-                    rng.gen_range(1, 6),
-                    rng.gen_range(1, 6),
-                    rng.gen_range(1, 6),
-                    rng.gen_range(1, 6),
-                    rng.gen_range(1, 6),
-                ],
+                marks: marks,
             })
         }
         return students;
